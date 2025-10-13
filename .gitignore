@@ -1,0 +1,16 @@
+# Salesforce / SFDX
+.sfdx/
+.sf/
+coverage/
+*.log
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-error.log*
+pnpm-lock.yaml
+
+# VSCode / SO
+.vscode/
+.DS_Store
+Thumbs.db
