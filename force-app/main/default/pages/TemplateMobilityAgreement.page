@@ -1,0 +1,87 @@
+<!--
+  @description       : 
+  @author            : Vinícius Caetano
+  @last modified on  : 07-05-2025
+  @last modified by  : Vinícius Caetano
+-->
+<apex:page renderAs="pdf" controller="PDFMobilityAgreementController" applyBodyTag="false">
+    <head>
+        <style type="text/css" media="print">
+            @page {
+                font-family: 'Verdana', sans-serif !important;
+            }
+            div.header {
+                display: block;
+                color: #003CB4;
+                text-align: left;
+                font-size: 10px;
+                font-family: 'Verdana', sans-serif !important;
+                font-weight: bold;
+            }
+        </style> 
+    </head>
+    
+    <div class="header">
+        <p style='margin-left: 500px;'>Higher Education:
+            <br/> Erasmus+
+            <br/> Mobility Agreement form
+            <br/>
+            <em>Participant’s name</em>
+        </p>
+    </div>
+
+    <p style="font-family: 'Verdana', sans-serif !important; font-size:15px; color: #002060; text-align: center; width:100%;">
+        <strong>Erasmus+ Mobility Agreement</strong>
+        <br/>
+        <strong>Staff Mobility For Training</strong>
+    </p>
+
+    <div style="margin-top: 0; font-family: 'Verdana', sans-serif !important; margin-left: 50px;">
+        <apex:outputText escape="false" value="{!decodedContent}" />
+    </div>
+
+    <!-- IMAGEM DA PRIMEIRA PÁGINA -->
+    <div class="TemplateMobilityAgreementFirstPage" style="page-break-after: always; text-align: left;">
+        <img style="width: 80%; margin-left: 50px;" src="{!$Resource.TemplateMobilityAgreementFirstTwoImage}" />
+        <img style="width: 81%; margin-left: 50px;" src="{!$Resource.TemplateMobilityAgreementFirstPageThreeTable}" />
+    </div>
+
+    <div class="header">
+        <p style='margin-left: 500px;'>Higher Education:
+            <br/> Erasmus+
+            <br/> Mobility Agreement form
+            <br/>
+            <em>Participant’s name</em>
+        </p>
+    </div>
+
+    <!-- IMAGEM DA SEGUNDA PÁGINA -->
+    <div class="TemplateMobilityAgreementPageTwo" style="page-break-after: always; text-align: left; margin-top: 10px;">
+        <img style="width: 80%; margin-left: 50px;" src="{!$Resource.TemplateMobilityAgreementPageTwoImage1}" />
+        <img style="width: 80%; margin-left: 50px; margin-top: -5px;" src="{!$Resource.TemplateMobilityAgreementPageTwoImage2}" />
+    </div>
+
+    <div class="header">
+        <p style='margin-left: 500px;'>Higher Education:
+            <br/> Erasmus+
+            <br/> Mobility Agreement form
+            <br/>
+            <em>Participant’s name</em>
+        </p>
+    </div>
+
+    <!-- IMAGEM DA TERCEIRA PÁGINA -->
+    <div class="TemplateMobilityAgreementPageThree" style="page-break-after: always; text-align: left; margin-top: 10px; position: relative;">
+        <img style="width: 80%; margin-left: 50px;" src="{!$Resource.TemplateMobilityAgreementPageThreeImage1}" />
+        <img style="width: 80%; margin-left: 50px; margin-top: 5px;" src="{!$Resource.TemplateMobilityAgreementPageThreeImage2}" />
+        <p style="position: absolute; bottom: 20%; right: 30%; font-family: 'Verdana', sans-serif !important; font-size: 15px; color: #000;">
+            Date: {!formattedDate}
+        </p>
+        <img style="width: 80%; margin-left: 50px; margin-top: 5px;" src="{!$Resource.TemplateMobilityAgreementPageThreeImage3}" />
+    </div>
+
+    <!-- IMAGEM DA QUARTA PÁGINA -->
+    <div class="TemplateMobilityAgreementPageFour" style="text-align: left; margin-top: 10px;">
+        <img style="width: 80%; margin-left: 50px;" src="{!$Resource.TemplateMobilityAgreementPageFour}" />
+    </div>
+</apex:page>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Group / Inter / Junior Certificate</fullName>
+        <default>false</default>
+        <label>Group / Inter / Junior Certificate</label>
+    </customValue>
+    <customValue>
+        <fullName>Leaving Certificate</fullName>
+        <default>false</default>
+        <label>Leaving Certificate</label>
+    </customValue>
+    <customValue>
+        <fullName>Bachelor&apos;s degree</fullName>
+        <default>false</default>
+        <label>Bachelor&apos;s degree</label>
+    </customValue>
+    <customValue>
+        <fullName>Master&apos;s degree/MBA</fullName>
+        <default>false</default>
+        <label>Master&apos;s Degree/MBA</label>
+    </customValue>
+    <customValue>
+        <fullName>Doctorate or higher</fullName>
+        <default>false</default>
+        <label>Doctorate or higher</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>Education</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

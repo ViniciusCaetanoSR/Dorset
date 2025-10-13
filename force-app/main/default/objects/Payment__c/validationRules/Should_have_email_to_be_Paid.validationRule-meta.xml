@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Should_have_email_to_be_Paid</fullName>
+    <active>true</active>
+    <errorConditionFormula>AND(ISBLANK( Email__c ), 
+ ISPICKVAL( Payment_Status__c , &apos;Paid&apos;) 
+)</errorConditionFormula>
+    <errorDisplayField>Payment_Status__c</errorDisplayField>
+    <errorMessage>Payment needs to have E-mail field populated to be set to &quot;Paid&quot;</errorMessage>
+</ValidationRule>

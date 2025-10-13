@@ -1,0 +1,5 @@
+<apex:page showHeader="false" sidebar="false">
+  <!-- Begin Default Content REMOVE THIS -->
+<a class="twitter-timeline" data-width="650" data-height="1000" href="https://twitter.com/dorsetcollege_?lang=en">Tweets by DorsetCollege</a> <script async='async' src="https://platform.twitter.com/widgets.js" charset="utf-8"></script>
+  <!-- End Default Content REMOVE THIS -->
+</apex:page>

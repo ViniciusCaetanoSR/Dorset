@@ -1,0 +1,245 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Interview_Email</name>
+        <label>Send Interview Email</label>
+        <locationX>654</locationX>
+        <locationY>146</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Create_Activity_Record</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>Body</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>Recipient_Emails</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>Sender_Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <elementReference>Org_Wide_Email_Address</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <constants>
+        <name>Org_Wide_Email_Address</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OrgWideEmailAddress</stringValue>
+        </value>
+    </constants>
+    <description>Added Patricia to recipient list</description>
+    <environments>Default</environments>
+    <interviewLabel>Send Interview Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Interview Schedule Send Email</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Activity_Record</name>
+        <label>Create Activity Record</label>
+        <locationX>656</locationX>
+        <locationY>432</locationY>
+        <connector>
+            <targetReference>Update_Application</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FromAddress</field>
+            <value>
+                <elementReference>Sender_Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HtmlBody</field>
+            <value>
+                <elementReference>Body</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MessageDate</field>
+            <value>
+                <elementReference>$Record.LastModifiedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedToId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>0</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ToAddress</field>
+            <value>
+                <elementReference>Recipient_Email</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Update_Application</name>
+        <label>Update Application</label>
+        <locationX>300</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Interview_Email_Sent__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>23</locationX>
+        <locationY>39</locationY>
+        <connector>
+            <targetReference>Send_Interview_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Interview_Status__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Required</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>INTV*</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Interview_Email_Sent__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+    <textTemplates>
+        <name>Body</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;span style=&quot;font-size:14px&quot;&gt;Dear Applicant,&lt;br /&gt;
+&lt;br /&gt;
+Thank you for your submitting your application and supporting documentation.&lt;br /&gt;
+You are now been invited for a quick interview on Zoom to have assessed a few areas, such as:&lt;/span&gt;
+
+&lt;ul&gt;
+	&lt;li&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Capability to take the course&lt;/span&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Past learning and academic record&lt;/span&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Relevant work experience&lt;/span&gt;&lt;/li&gt;
+	&lt;li&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Interest in and motivation to take the course&lt;/span&gt;&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;span style=&quot;font-size:14px&quot;&gt;The interview will take between 10 and 15 minutes, during which you will also have the opportunity&amp;nbsp;to ask any questions about Dorset College and the course that you are interested in.&lt;br /&gt;
+&lt;br /&gt;
+Please&amp;nbsp;&lt;a href=&quot;https://professionalcoursesinterview.youcanbook.me/&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; title=&quot;https://professionalcoursesinterview.youcanbook.me/&quot;&gt;click here&lt;/a&gt;&amp;nbsp;to&amp;nbsp;book your slot.&amp;nbsp;&amp;nbsp;&lt;br /&gt;
+&lt;br /&gt;
+Regards,&lt;/span&gt;
+
+&lt;p&gt;&lt;span style=&quot;font-size:14px&quot;&gt;Luize Strohschoen&lt;br /&gt;
+&lt;strong&gt;Professional Courses and Springboard Lead&lt;/strong&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;span style=&quot;font-size:12px&quot;&gt;CONFIDENTIALITY AND DISCLAIMER NOTICE This e-mail and any files transmitted with it are confidential and are intended solely for use by the addressee. Any unauthorised dissemination, distribution or copying of this message and any attachments is strictly prohibited. If you have received this e-mail in error, please notify the sender and delete the message. Any views or opinions presented in this e-mail may solely be the views of the author and cannot be relied upon as being those of Dorset College. E-mail communications such as this cannot be guaranteed to be virus-free, timely, secure or error-free and Dorset College does not accept liability for any such matters or their consequences. Please consider the environment before printing this e-mail. Dorset College https://www.dorset.ie/&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Subject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Schedule Interview</text>
+    </textTemplates>
+    <variables>
+        <name>Recipient_Email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Record.Account.Email__c</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>List of email recipients</description>
+        <name>Recipient_Emails</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!$Record.Account.Email__c},luize@dorset.ie </stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Sender_Email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>luize@dorset.ie</stringValue>
+        </value>
+    </variables>
+</Flow>
