@@ -1,0 +1,134 @@
+.slds-path {
+    background: #fff;
+}
+
+.slds-path__track {
+    background: #fafaf9;
+    border: 1px solid #dddbda;
+    border-radius: 0.25rem;
+    padding: 0;
+}
+
+.slds-path__scroller-container {
+    flex: 1;
+    overflow: hidden;
+}
+
+.slds-path__scroller {
+    overflow-x: auto;
+    overflow-y: hidden;
+}
+
+.slds-path__scroller_inner {
+    display: inline-block;
+    min-width: 100%;
+}
+
+.slds-path__nav {
+    display: flex;
+    justify-content: space-between;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.slds-path__item {
+    flex: 1;
+    min-width: 5rem;
+    overflow: hidden;
+    position: relative;
+}
+
+.slds-path__link {
+    color: inherit;
+    cursor: pointer;
+    display: flex;
+    justify-content: center;
+    padding: 0.75rem 0.5rem;
+    position: relative;
+    text-decoration: none;
+    transition: background-color 0.1s;
+}
+
+.slds-path__link:hover {
+    background: #f3f2f2;
+}
+
+.slds-path__stage {
+    display: none;
+    margin-right: 0.5rem;
+}
+
+.slds-path__title {
+    font-size: 0.8125rem;
+    text-align: center;
+    line-height: 1.5;
+}
+
+/* Incompleto */
+.slds-is-incomplete .slds-path__link {
+    background: #c9c7c5;
+}
+
+.slds-is-incomplete .slds-path__title {
+    color: #706e6b;
+}
+
+/* Completo */
+.slds-is-complete .slds-path__link {
+    background: #2e844a;
+}
+
+.slds-is-complete .slds-path__title {
+    color: #fff;
+}
+
+.slds-is-complete .slds-path__stage {
+    display: inline-block;
+}
+
+.slds-is-complete .slds-icon {
+    fill: #fff;
+    width: 0.875rem;
+    height: 0.875rem;
+}
+
+/* Atual */
+.slds-is-current .slds-path__link {
+    background: #0176d3;
+}
+
+.slds-is-current .slds-path__title {
+    color: #fff;
+    font-weight: 700;
+}
+
+/* Botão */
+.slds-path__action {
+    flex-shrink: 0;
+    padding: 0.5rem;
+}
+
+.slds-path__mark-complete {
+    border-radius: 0.25rem;
+    padding: 0.5rem 1rem;
+    white-space: nowrap;
+    border: none;
+    cursor: pointer;
+    font-size: 0.8125rem;
+}
+
+.slds-button_brand {
+    background: #0176d3;
+    color: #fff;
+}
+
+.slds-button_brand:hover:not(:disabled) {
+    background: #014486;
+}
+
+.slds-button_brand:disabled {
+    background: #c9c7c5;
+    color: #706e6b;
+    cursor: not-allowed;
+}
