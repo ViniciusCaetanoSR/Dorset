@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>54.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <formulas>
+        <name>CalcPeakDays</name>
+        <dataType>Number</dataType>
+        <expression>IF (month({!$Record.Accommodation_Arrival_Date__c}) &gt; 8
+,0,
+if( {!$Record.Accommodation_End_Date__c} &lt; date(year({!$Record.Accommodation_End_Date__c}),5,31)
+,0,
+IF (AND(month({!$Record.Accommodation_End_Date__c}) &gt;8,( {!$Record.Accommodation_Arrival_Date__c} &lt; date(year({!$Record.Accommodation_Arrival_Date__c}),5,31)))
+,91,
+IF (AND( month({!$Record.Accommodation_Arrival_Date__c}) &gt; 5 ,month({!$Record.Accommodation_End_Date__c}) &lt;9)
+,({!$Record.Accommodation_End_Date__c} - {!$Record.Accommodation_Arrival_Date__c}),
+IF (AND( month({!$Record.Accommodation_Arrival_Date__c}) &gt; 5 ,month({!$Record.Accommodation_End_Date__c}) &gt; 8),
+date(year({!$Record.Accommodation_End_Date__c}),8,31)  - {!$Record.Accommodation_Arrival_Date__c} ,
+{!$Record.Accommodation_End_Date__c} - date(year({!$Record.Accommodation_End_Date__c}),5,31))
+)
+)
+)
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <formulas>
+        <name>EndDate</name>
+        <dataType>Date</dataType>
+        <expression>{!$Record.Accommodation_Arrival_Date__c} + ({!$Record.Accommodation_Duration__c} * 7)</expression>
+    </formulas>
+    <formulas>
+        <name>SetOffPeaksDays</name>
+        <dataType>Number</dataType>
+        <expression>if
+	( {!$Record.Accommodation_End_Date__c} &lt; date(year({!$Record.Accommodation_End_Date__c}),5,31)
+		,{!$Record.Accommodation_End_Date__c} - {!$Record.Accommodation_Arrival_Date__c},
+			IF (AND(month({!$Record.Accommodation_End_Date__c}) &gt;8,{!$Record.Accommodation_Arrival_Date__c} &lt; date(year({!$Record.Accommodation_Arrival_Date__c}),5,31)),
+						{!$Record.Accommodation_End_Date__c} - {!$Record.Accommodation_Arrival_Date__c} - 91,
+						IF (AND( month({!$Record.Accommodation_Arrival_Date__c}) &gt; 5 ,month({!$Record.Accommodation_End_Date__c}) &lt;9)
+						,0,
+							IF (AND( month({!$Record.Accommodation_Arrival_Date__c}) &gt; 8 ,month({!$Record.Accommodation_End_Date__c}) &gt; 8),
+{!$Record.Accommodation_End_Date__c} - {!$Record.Accommodation_Arrival_Date__c}
+,IF (AND(month({!$Record.Accommodation_End_Date__c}) &gt;5,{!$Record.Accommodation_Arrival_Date__c} &lt; date(year({!$Record.Accommodation_Arrival_Date__c}),5,31),(month({!$Record.Accommodation_End_Date__c}) &lt; 9)),
+ (date(year({!$Record.Accommodation_End_Date__c}),5,31))  - {!$Record.Accommodation_Arrival_Date__c} , {!$Record.Accommodation_End_Date__c} - (date(year({!$Record.Accommodation_End_Date__c}),8,31))
+
+
+				)				
+								)
+							)
+				)
+)</expression>
+        <scale>2</scale>
+    </formulas>
+    <interviewLabel>Set Accomodation Dates {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>Set Accomodation Dates</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordUpdates>
+        <name>Set_off_Peak_days</name>
+        <label>Set off Peak days</label>
+        <locationX>546</locationX>
+        <locationY>547</locationY>
+        <inputAssignments>
+            <field>Accommodation_Off_Peak_Weeks__c</field>
+            <value>
+                <elementReference>SetOffPeaksDays</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Set_Peak_Days</name>
+        <label>Set Peak Days</label>
+        <locationX>730</locationX>
+        <locationY>540</locationY>
+        <connector>
+            <targetReference>Set_off_Peak_days</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Accommodation_Peak_Weeks__c</field>
+            <value>
+                <elementReference>CalcPeakDays</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <recordUpdates>
+        <name>Update_End_Date</name>
+        <label>Update End Date</label>
+        <locationX>736</locationX>
+        <locationY>374</locationY>
+        <connector>
+            <targetReference>Set_Peak_Days</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Accommodation_End_Date__c</field>
+            <value>
+                <elementReference>EndDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>616</locationX>
+        <locationY>47</locationY>
+        <connector>
+            <targetReference>Update_End_Date</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Accommodation_Required__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

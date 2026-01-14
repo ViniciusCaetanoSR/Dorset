@@ -1,0 +1,260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <actionCalls>
+        <name>Send_Interview_Email</name>
+        <label>Send Interview Email</label>
+        <locationX>654</locationX>
+        <locationY>146</locationY>
+        <actionName>emailSimple</actionName>
+        <actionType>emailSimple</actionType>
+        <connector>
+            <targetReference>Create_Activity_Record</targetReference>
+        </connector>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>emailBody</name>
+            <value>
+                <elementReference>Body</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailAddresses</name>
+            <value>
+                <elementReference>Getagent_enduseremailaddresses</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>sendRichBody</name>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderAddress</name>
+            <value>
+                <elementReference>Sender_Email</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>senderType</name>
+            <value>
+                <elementReference>Org_Wide_Email_Address</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>emailSubject</name>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputParameters>
+        <nameSegment>emailSimple</nameSegment>
+    </actionCalls>
+    <apiVersion>55.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <constants>
+        <name>Org_Wide_Email_Address</name>
+        <dataType>String</dataType>
+        <value>
+            <stringValue>OrgWideEmailAddress</stringValue>
+        </value>
+    </constants>
+    <description>SEND PO cancellation Email</description>
+    <environments>Default</environments>
+    <formulas>
+        <name>Getagent_enduseremailaddresses</name>
+        <dataType>String</dataType>
+        <expression>{!$Record.Account.PersonEmail}&amp;&quot;, &quot;&amp; if( contains({!$Record.Agent_Email__c} ,&quot;dorset.ie&quot;),&quot;&quot;,{!$Record.Agent_Email__c})</expression>
+    </formulas>
+    <interviewLabel>SEND PO cancellation Email {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>SEND PO cancellation Email</label>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordCreates>
+        <name>Create_Activity_Record</name>
+        <label>Create Activity Record</label>
+        <locationX>656</locationX>
+        <locationY>432</locationY>
+        <connector>
+            <targetReference>Update_Application</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>FromAddress</field>
+            <value>
+                <elementReference>Sender_Email</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>HtmlBody</field>
+            <value>
+                <elementReference>Body</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>MessageDate</field>
+            <value>
+                <elementReference>$Record.LastModifiedDate</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>RelatedToId</field>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Status</field>
+            <value>
+                <stringValue>0</stringValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>Subject</field>
+            <value>
+                <elementReference>Subject</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ToAddress</field>
+            <value>
+                <elementReference>Recipient_Email</elementReference>
+            </value>
+        </inputAssignments>
+        <object>EmailMessage</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordCreates>
+    <recordUpdates>
+        <name>Update_Application</name>
+        <label>Update Application</label>
+        <locationX>300</locationX>
+        <locationY>431</locationY>
+        <inputAssignments>
+            <field>Cancellation_Email_Sent__c</field>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>23</locationX>
+        <locationY>36</locationY>
+        <connector>
+            <targetReference>Send_Interview_Email</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>StageName</field>
+            <operator>EqualTo</operator>
+            <value>
+                <stringValue>Cancelled</stringValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Letter_of_offer_sent__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>true</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Cancellation_Email_Sent__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <booleanValue>false</booleanValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Amount_paid__c</field>
+            <operator>EqualTo</operator>
+            <value>
+                <numberValue>0.0</numberValue>
+            </value>
+        </filters>
+        <filters>
+            <field>Course_type_validation__c</field>
+            <operator>Contains</operator>
+            <value>
+                <stringValue>Higher</stringValue>
+            </value>
+        </filters>
+        <object>Opportunity</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Obsolete</status>
+    <textTemplates>
+        <name>Body</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>&lt;span style=&quot;font-size:14px&quot;&gt;Dear {!$Record.Account.Name},&lt;br /&gt;
+&lt;br /&gt;
+I am writing to inform you about the cancellation of your application for the {!$Record.Product__r.Name} programme at Dorset College that was due to start on {!$Record.start_date__c}. I regret to inform you that your application has been cancelled due to non-payment of the required fees.
+&lt;br/&gt;&lt;br/&gt;
+
+As per our records, we have not received the necessary payment to secure your place in the program. We understand that there could be various reasons for the delay in payment, but it is imperative that the fees are paid on time to secure a place in the programme. We would like to remind you that timely payment of fees is a crucial aspect of the sales process, and we cannot guarantee your place in the programme if the fees are not paid in a timely manner.
+&lt;br/&gt;&lt;br/&gt;
+If you still wish to pursue your studies at Dorset College, we would be happy to receive a new application from you, along with the necessary fees, once you are ready to proceed. Our sales team is always available to assist you with any questions or concerns.
+&lt;br/&gt;&lt;br/&gt;
+Sincerely,&lt;/span&gt;
+&lt;br/&gt;&lt;br/&gt;
+
+&lt;strong&gt;Dorset College&lt;/span&gt;&lt;br /&gt;
+&lt;strong&gt;7,8 Belvedere Place, D01 EV27&lt;/strong&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;strong&gt;Dublin - Ireland&lt;/strong&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;strong&gt;www.dorset.ie&lt;/strong&gt;&lt;/span&gt;&lt;br /&gt;
+&lt;br /&gt;
+&lt;span style=&quot;font-size:12px&quot;&gt;CONFIDENTIALITY AND DISCLAIMER NOTICE This e-mail and any files transmitted with it are confidential and are intended solely for use by the addressee. Any unauthorised dissemination, distribution or copying of this message and any attachments is strictly prohibited. If you have received this e-mail in error, please notify the sender and delete the message. Any views or opinions presented in this e-mail may solely be the views of the author and cannot be relied upon as being those of Dorset College. E-mail communications such as this cannot be guaranteed to be virus-free, timely, secure or error-free and Dorset College does not accept liability for any such matters or their consequences. Please consider the environment before printing this e-mail. Dorset College https://www.dorset.ie/&lt;/span&gt;&lt;/p&gt;</text>
+    </textTemplates>
+    <textTemplates>
+        <name>Subject</name>
+        <isViewedAsPlainText>true</isViewedAsPlainText>
+        <text>Dorset Course Cancellation - Student Number {!$Record.Account.Student_ID__c}</text>
+    </textTemplates>
+    <variables>
+        <name>Recipient_Email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <elementReference>$Record.Account.Email__c</elementReference>
+        </value>
+    </variables>
+    <variables>
+        <description>List of email recipients</description>
+        <name>Recipient_Emails</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>{!$Record.Account.Email__c},brian.deburca@inneall.ie</stringValue>
+        </value>
+    </variables>
+    <variables>
+        <name>Sender_Email</name>
+        <dataType>String</dataType>
+        <isCollection>false</isCollection>
+        <isInput>false</isInput>
+        <isOutput>false</isOutput>
+        <value>
+            <stringValue>noreply@dorset.ie</stringValue>
+        </value>
+    </variables>
+</Flow>

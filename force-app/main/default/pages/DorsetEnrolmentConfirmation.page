@@ -1,0 +1,101 @@
+<!--
+  @description       : 
+  @author            : Vinícius Caetano
+  @last modified on  : 16-05-2025
+  @last modified by  : Vinícius Caetano
+-->
+<apex:page showHeader="false" controller="DorsetEnrolConfController" sidebar="false" contentType="text/html" standardStylesheets="false" applyBodyTag="false">
+    <html>
+        <head>
+            <style>
+                body {
+                    font-family: 'Arial', sans-serif;
+                    margin: 0;
+                    padding: 0;
+                    background-color: #ffffff;
+                }
+                .header {
+                    background-color: #002D72;
+                    padding: 20px;
+                    color: white;
+                    text-align: center;
+                }
+                .sub-header {
+                    background-color: #20459a;
+                    padding: 15px;
+                    color: white;
+                    font-size: 18px;
+                    font-weight: bold;
+                }
+                .content {
+                    padding: 20px;
+                    font-size: 14px;
+                    color: #000;
+                }
+                .content p {
+                    margin: 8px 0;
+                }
+                .footer {
+                    background-color: #002D72;
+                    color: white;
+                    padding: 20px;
+                    font-size: 12px;
+                    display: flex;
+                    justify-content: space-between;
+                    flex-wrap: wrap;
+                }
+                .footer div {
+                    margin: 10px 0;
+                }
+                .label {
+                    font-weight: bold;
+                }
+            </style>
+        </head>
+        <body>
+            <div class="header">
+                <h1>Dorset College Dublin</h1>
+            </div>
+            <div class="sub-header">
+                Dorset College: Enrolment Confirmation Validator
+            </div>
+            <div class="content">
+                <p><span class="label">Full Name:</span> {!fullName}</p>
+                <p><span class="label">Student ID:</span> {!studentId}</p>
+                <!-- <p><span class="label">Date of Birth:</span> {!dateOfBirth}</p>
+                <p><span class="label">Passport Number:</span> {!passportNumber}</p> -->
+                <p><span class="label">Country of Birth:</span> {!countryOfBirth}</p>
+                <p><span class="label">Programme Title:</span>  {!programmeTitle}</p>
+                <p><span class="label">Mode:</span> Full Time</p>
+                <p><span class="label">Status of Application:</span> All fees are paid in full</p>
+                <p><span class="label">Date of issuance of the letter:</span> {!formattedLastStageChangeDate}</p>
+                <br/>
+                <p>Should any further information be required concerning this student please do not hesitate to contact the college on +353 (1) 5746850 citing the College Internal Reference number 76989.</p>
+            </div>
+            <div class="footer">
+                <div>
+                    <strong>Campus</strong><br/>
+                    Dorset College,<br/>
+                    7 &amp; 8 Belvedere Place,<br/>
+                    Mountjoy Square,<br/>
+                    Dublin 1, D01 Y2P3
+                </div>
+                <div>
+                    <strong>International Office</strong><br/>
+                    +353 (01) 5746850<br/>
+                    international@dorset.ie
+                </div>
+                <div>
+                    <strong>Accounts Office</strong><br/>
+                    +353 (01) 5746850<br/>
+                    accounts@dorset.ie
+                </div>
+                <div>
+                    <strong>Admissions / Reception</strong><br/>
+                    +353 (1) 5746850<br/>
+                    info@dorset.ie
+                </div>
+            </div>
+        </body>
+    </html>
+</apex:page>

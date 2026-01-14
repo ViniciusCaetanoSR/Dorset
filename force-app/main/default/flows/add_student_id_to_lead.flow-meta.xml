@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Flow xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>57.0</apiVersion>
+    <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
+    <environments>Default</environments>
+    <formulas>
+        <name>getAccount</name>
+        <dataType>String</dataType>
+        <expression>&quot;https://dorsetcollege.lightning.force.com/&quot; &amp;{!get_accounts.Id}</expression>
+    </formulas>
+    <interviewLabel>add student_id to lead {!$Flow.CurrentDateTime}</interviewLabel>
+    <label>add student_id to lead</label>
+    <loops>
+        <name>get_accounts</name>
+        <label>get accounts</label>
+        <locationX>897</locationX>
+        <locationY>485</locationY>
+        <collectionReference>get_contacts</collectionReference>
+        <iterationOrder>Asc</iterationOrder>
+        <nextValueConnector>
+            <targetReference>Add_Contact_Link</targetReference>
+        </nextValueConnector>
+    </loops>
+    <processMetadataValues>
+        <name>BuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>CanvasMode</name>
+        <value>
+            <stringValue>FREE_FORM_CANVAS</stringValue>
+        </value>
+    </processMetadataValues>
+    <processMetadataValues>
+        <name>OriginBuilderType</name>
+        <value>
+            <stringValue>LightningFlowBuilder</stringValue>
+        </value>
+    </processMetadataValues>
+    <processType>AutoLaunchedFlow</processType>
+    <recordLookups>
+        <description>get list of contacts</description>
+        <name>get_contacts</name>
+        <label>get contacts</label>
+        <locationX>711</locationX>
+        <locationY>390</locationY>
+        <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
+        <connector>
+            <targetReference>get_accounts</targetReference>
+        </connector>
+        <filterLogic>and</filterLogic>
+        <filters>
+            <field>Email</field>
+            <operator>EqualTo</operator>
+            <value>
+                <elementReference>$Record.Email</elementReference>
+            </value>
+        </filters>
+        <getFirstRecordOnly>false</getFirstRecordOnly>
+        <object>Contact</object>
+        <storeOutputAutomatically>true</storeOutputAutomatically>
+    </recordLookups>
+    <recordUpdates>
+        <name>Add_Contact_Link</name>
+        <label>Add Contact Link</label>
+        <locationX>708</locationX>
+        <locationY>560</locationY>
+        <connector>
+            <targetReference>get_accounts</targetReference>
+        </connector>
+        <inputAssignments>
+            <field>Account_Name__c</field>
+            <value>
+                <elementReference>getAccount</elementReference>
+            </value>
+        </inputAssignments>
+        <inputReference>$Record</inputReference>
+    </recordUpdates>
+    <start>
+        <locationX>615</locationX>
+        <locationY>48</locationY>
+        <connector>
+            <targetReference>get_contacts</targetReference>
+        </connector>
+        <object>Lead</object>
+        <recordTriggerType>CreateAndUpdate</recordTriggerType>
+        <triggerType>RecordAfterSave</triggerType>
+    </start>
+    <status>Active</status>
+</Flow>

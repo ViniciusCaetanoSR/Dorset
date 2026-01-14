@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<PermissionSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <classAccesses>
+        <apexClass>DorsetEnrolConfController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFEmailSender</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFEmailSenderScheduled</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFGeneratorService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PDFMobilityAgreementController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>PdfContentController</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <description>Concede acesso total (leitura, criação, edição e exclusão) às Apex Classes, Visualforce Pages, Static Resources e ao objeto PdfTemplate__c, permitindo a manutenção dos templates e a geração de PDFs personalizados.</description>
+    <hasActivationRequired>false</hasActivationRequired>
+    <label>PDF Access - Edit</label>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>PdfTemplate__c</object>
+        <viewAllFields>false</viewAllFields>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <tabSettings>
+        <tab>PdfTemplate__c</tab>
+        <visibility>Visible</visibility>
+    </tabSettings>
+</PermissionSet>

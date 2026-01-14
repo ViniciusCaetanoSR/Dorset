@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Alternative_Category__c</fullName>
+    <deleteConstraint>SetNull</deleteConstraint>
+    <label>Alternative Category</label>
+    <referenceTo>Course_Categorty__c</referenceTo>
+    <relationshipLabel>Courses (Alternative Category)</relationshipLabel>
+    <relationshipName>Courses1</relationshipName>
+    <required>false</required>
+    <trackHistory>false</trackHistory>
+    <trackTrending>false</trackTrending>
+    <type>Lookup</type>
+</CustomField>

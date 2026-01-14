@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>EFL</fullName>
+        <default>false</default>
+        <label>EFL</label>
+    </customValue>
+    <customValue>
+        <fullName>Foundation</fullName>
+        <default>false</default>
+        <label>Foundation</label>
+    </customValue>
+    <customValue>
+        <fullName>Higher Education</fullName>
+        <default>false</default>
+        <label>Higher Education</label>
+    </customValue>
+    <customValue>
+        <fullName>In - Sessional</fullName>
+        <default>false</default>
+        <label>In - Sessional</label>
+    </customValue>
+    <customValue>
+        <fullName>Pre-Masters</fullName>
+        <default>false</default>
+        <label>Pre-Masters</label>
+    </customValue>
+    <customValue>
+        <fullName>Pre-sessional</fullName>
+        <default>false</default>
+        <label>Pre-sessional</label>
+    </customValue>
+    <customValue>
+        <fullName>Semester Abroad</fullName>
+        <default>false</default>
+        <label>Semester Abroad</label>
+    </customValue>
+    <customValue>
+        <fullName>Short Term</fullName>
+        <default>false</default>
+        <label>Short Term</label>
+    </customValue>
+    <customValue>
+        <fullName>Sundries</fullName>
+        <default>false</default>
+        <label>Sundries</label>
+    </customValue>
+    <customValue>
+        <fullName>Further Education</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Further Education</label>
+    </customValue>
+    <customValue>
+        <fullName>Other</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Other</label>
+    </customValue>
+    <masterLabel>Product Commission Category</masterLabel>
+    <sorted>true</sorted>
+</GlobalValueSet>

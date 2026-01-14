@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>Stamp 0</fullName>
+        <default>false</default>
+        <label>Stamp 0</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 1</fullName>
+        <default>false</default>
+        <label>Stamp 1</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 1A</fullName>
+        <default>false</default>
+        <label>Stamp 1A</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 1G</fullName>
+        <default>false</default>
+        <label>Stamp 1G</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 2</fullName>
+        <default>false</default>
+        <label>Stamp 2</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 2A</fullName>
+        <default>false</default>
+        <label>Stamp 2A</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 3</fullName>
+        <default>false</default>
+        <label>Stamp 3</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 4</fullName>
+        <default>false</default>
+        <label>Stamp 4</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 5</fullName>
+        <default>false</default>
+        <label>Stamp 5</label>
+    </customValue>
+    <customValue>
+        <fullName>Stamp 6</fullName>
+        <default>false</default>
+        <label>Stamp 6</label>
+    </customValue>
+    <customValue>
+        <fullName>EU/EAA Citizen</fullName>
+        <default>false</default>
+        <label>EU/EAA Citizen</label>
+    </customValue>
+    <masterLabel>Visa Types</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>

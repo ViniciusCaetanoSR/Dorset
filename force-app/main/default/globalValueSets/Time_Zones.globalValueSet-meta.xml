@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<GlobalValueSet xmlns="http://soap.sforce.com/2006/04/metadata">
+    <customValue>
+        <fullName>UTC +14</fullName>
+        <default>false</default>
+        <label>UTC +14</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +13</fullName>
+        <default>false</default>
+        <label>UTC +13</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +12</fullName>
+        <default>false</default>
+        <label>UTC +12</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +11</fullName>
+        <default>false</default>
+        <label>UTC +11</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +10</fullName>
+        <default>false</default>
+        <label>UTC +10</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +9</fullName>
+        <default>false</default>
+        <label>UTC +9</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +8</fullName>
+        <default>false</default>
+        <label>UTC +8</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +7</fullName>
+        <default>false</default>
+        <label>UTC +7</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +6</fullName>
+        <default>false</default>
+        <label>UTC +6</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +5</fullName>
+        <default>false</default>
+        <label>UTC +5</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +4</fullName>
+        <default>false</default>
+        <label>UTC +4</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +3</fullName>
+        <default>false</default>
+        <label>UTC +3</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +2</fullName>
+        <default>false</default>
+        <label>UTC +2</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +1</fullName>
+        <default>false</default>
+        <label>UTC +1</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC +0</fullName>
+        <default>false</default>
+        <label>UTC +0</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -1</fullName>
+        <default>false</default>
+        <label>UTC -1</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -2</fullName>
+        <default>false</default>
+        <label>UTC -2</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -3</fullName>
+        <default>false</default>
+        <label>UTC -3</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -4</fullName>
+        <default>false</default>
+        <label>UTC -4</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -5</fullName>
+        <default>false</default>
+        <label>UTC -5</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -6</fullName>
+        <default>false</default>
+        <label>UTC -6</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -7</fullName>
+        <default>false</default>
+        <label>UTC -7</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -8</fullName>
+        <default>false</default>
+        <label>UTC -8</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -9</fullName>
+        <default>false</default>
+        <label>UTC -9</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -10</fullName>
+        <default>false</default>
+        <label>UTC -10</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -11</fullName>
+        <default>false</default>
+        <label>UTC -11</label>
+    </customValue>
+    <customValue>
+        <fullName>UTC -12</fullName>
+        <default>false</default>
+        <label>UTC -12</label>
+    </customValue>
+    <customValue>
+        <fullName>International</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>International</label>
+    </customValue>
+    <customValue>
+        <fullName>Local</fullName>
+        <default>false</default>
+        <isActive>false</isActive>
+        <label>Local</label>
+    </customValue>
+    <masterLabel>Time Zones</masterLabel>
+    <sorted>false</sorted>
+</GlobalValueSet>
