@@ -1,8 +1,8 @@
 <!--
   @description       : 
-  @author            : Vinícius Caetano
-  @last modified on  : 15-05-2025
-  @last modified by  : Vinícius Caetano
+  @author            : Jhone Menezes
+  @last modified on  : 10-11-2025
+  @last modified by  : Jhone Menezes
 -->
 <apex:page renderAs="pdf" controller="PdfContentController" applyBodyTag="false">
 
@@ -30,6 +30,9 @@
   </head>
   <div class="header">
     <img style="width: 100%;" src="{!$Resource.headerPO}" />
+    <apex:image rendered="{!isEnglishLanguageCategory}"
+                url="{!$Resource.logoEL}"
+                style="position: absolute; top: 5px; right: 15px; width: 25%;" />
   </div>
 
   <div style="margin-top: 0; font-family: Arial; padding: 0 60px;">
@@ -39,28 +42,66 @@
     <div style="font-size: 12px; font-family: Arial, Helvetica, sans-serif; color: #12215D; line-height: 3; ">
       <apex:outputText escape="false" value="{!decodedContent}" />
     </div>
-    <div style=" margin-top: 40px;">
-      <img style="width: 30%; margin-top: 2px; border-width: 0 0 1px 0; border-style: solid; border-color: #12215D;"
-        src="{!$Resource.patriciaSignature}" />
-      <span style="color: #12215D; font-size: 12px; font-family: 'Arial', Helvetica, sans-serif !important;">
-        <br />Ms. Patricia Enzweiler
-        <br />Director of International Relations
+    <apex:outputPanel rendered="{!showPatricia}">
+      <div style=" margin-top: 40px;">
+        <img style="width: 30%; margin-top: 2px; border-width: 0 0 1px 0; border-style: solid; border-color: #12215D;"
+          src="{!$Resource.patriciaSignature}" />
+        <span style="color: #12215D; font-size: 12px; font-family: 'Arial', Helvetica, sans-serif !important;">
+          <br />Ms. Patricia Enzweiler
+          <br />Director of International Relations
+        </span>
+      </div>
+    </apex:outputPanel>
+
+    <apex:outputPanel rendered="{!showHugh}">
+      <div style=" margin-top: 40px;">
+        <img style="width: 25%; margin-top: 2px; border-width: 0 0 1px 0; border-style: solid; border-color: #12215D;"
+          src="{!$Resource.hughSignature}" />
+        <span style="color: #12215D; font-size: 12px; font-family: 'Arial', Helvetica, sans-serif !important;">
+          <br />Mr. Hugh Hughes
+          <br />Managing Director
+        </span>
+      </div>
+    </apex:outputPanel>
+    
+    <apex:outputPanel rendered="{!showStamp}">
+      <div style="position: fixed; width: 100%; height: 150px; top: 800px;">
+        <apex:outputPanel rendered="{!IsTemplateACC}">
+          <apex:outputPanel rendered="{!showQr}">
+            <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
+              style="position: absolute; right: 220px; width: 150px; height: 150px; top: 10px;" />
+            <img src="{!qrCodeUrl}" alt="QR Code"
+              style="position: absolute; right: 70px; width: 120px; height: 120px; top: 30px;" />
+          </apex:outputPanel>
+
+          <apex:outputPanel rendered="{!NOT(showQr)}">
+            <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
+              style="position: absolute; right: 110px; width: 150px; height: 150px; top: 0px;" />
+          </apex:outputPanel>
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!IsTemplatePO && (isErasmusCategory || isProfessionalCourseCategory)}">
+          <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
+            style="position: absolute; right: 110px; width: 150px; height: 150px; top: 0px;" />
+        </apex:outputPanel>
+
+        <apex:outputPanel rendered="{!isProfessionalCourseCategory}">
+          <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
+            style="position: absolute; right: 110px; width: 150px; height: 150px; top: 0px;" />
+        </apex:outputPanel>
+      </div>
+    </apex:outputPanel>
+  </div>
+
+  <apex:outputPanel rendered="{!showValidityNote}">
+    <div style="margin-top: 50px; text-align: center;">
+      <span style="background-color: #12215D; color: #FFFF00; font-family: Arial, Helvetica, sans-serif;
+                  font-size: 12px; padding: 3px 10px; display: inline-block;">
+        Please note that this offer is valid for 30 days after the issuance of the document
       </span>
     </div>
-    <div style="position: fixed; width: 100%; height: 150px;">
-      <apex:outputPanel rendered="{!exibirQrCode}">
-        <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
-          style="position: absolute; right: 220px; width: 150px; height: 150px; top: 10px;" />
-        <img src="{!qrCodeUrl}" alt="QR Code"
-          style="position: absolute; right: 70px; width: 120px; height: 120px; top: 30px;" />
-      </apex:outputPanel>
+  </apex:outputPanel>
 
-      <apex:outputPanel rendered="{!NOT(exibirQrCode)}">
-        <img src="{!$Resource.dorsetStamp}" alt="Dorset Stamp"
-          style="position: absolute; right: 110px; width: 150px; height: 150px; top: 0px;" />
-      </apex:outputPanel>
-    </div>
-  </div>
   <div class="footer" style="position: fixed; bottom: 0; width: 100%;">
     <img src="{!$Resource.footerPO}" style="width: 100%; display: block;" />
     <div
