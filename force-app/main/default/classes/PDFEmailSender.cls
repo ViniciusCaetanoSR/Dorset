@@ -138,7 +138,7 @@ public without sharing class PDFEmailSender {
     private static Opportunity fetchOpportunity(Id applicationId) {
         try {
             return [
-                SELECT Id, Name, StageName, Account.PersonEmail, Letter_of_offer_sent__c, Letter_of_acceptance_sent__c
+                SELECT Id, Name, StageName, Account.PersonEmail, Course_Category__c, Agent_Email__c, Course_Category__r.Name, Account.FirstName, Letter_of_offer_sent__c, Letter_of_acceptance_sent__c
                 FROM Opportunity
                 WHERE Id = :applicationId
                 LIMIT 1
@@ -203,6 +203,25 @@ public without sharing class PDFEmailSender {
         }
     }
 
+    private static String processarRegards(String html, Opportunity opp) {
+        if (String.isBlank(html) || !html.contains('{regards}')) return html;
+
+        String category = (opp.Course_Category__c != null) ? opp.Course_Category__r.Name : '';
+
+        if (!category.toLowerCase().contains('erasmus')) {
+            String email = opp.Agent_Email__c.toLowerCase();
+            String aluno = (opp.Account != null) ? opp.Account.FirstName : '';
+
+            String replacement = email.contains('@dorset.ie')
+                ? 'Dear ' + aluno + ','
+                : 'Dear Partner,';
+
+            return html.replace('{regards}', replacement);
+        }
+
+        return html;
+    }
+
     private static Messaging.SingleEmailMessage buildEmail(
         Opportunity opp,
         List<PdfTemplate__c> templates,
@@ -232,21 +251,97 @@ public without sharing class PDFEmailSender {
         }
 
         // Set recipient
-        mail.setToAddresses(new List<String>{ opp.Account.PersonEmail });
+        //mail.setToAddresses(new List<String>{ opp.Account.PersonEmail }); COMENTADO APÓS ALTERAÇÃO NAS CARTAS HIGHER EDUCATION 11/11/25
+
+        // --- Determinar destinatários dinamicamente com base no tipo de curso e agente ---
+        String studentEmail = opp.Account.PersonEmail;
+        String agentEmail = null;
+        String ccEmail = null;
+
+        // Buscar informações adicionais da Application (Opportunity)
+        Opportunity oppDetails = [
+            SELECT Id, 
+                    Account.PersonEmail,
+                    Account.FirstName,
+                    Account.LastName,
+                    Agent_Email__c, 
+                    Course_Category__r.Course_Type__r.Name, 
+                    Course_Category__r.Name,
+                    Course_Category__c
+            FROM Opportunity
+            WHERE Id = :opp.Id
+            LIMIT 1
+        ];
+
+        String fullName =  oppDetails.Account.FirstName + ' ' + oppDetails.Account.LastName;
+        agentEmail = oppDetails.Agent_Email__c;
+        String courseType = oppDetails.Course_Category__r.Course_Type__r.Name;
+        String courseCategory = oppDetails.Course_Category__r.Name;
+
+        List<String> ccFinal = new List<String>();
+
+        // Regra nova para Higher Education, sem Erasmus
+        if ((courseType == 'Higher Education' || courseType == 'English Language') && (courseCategory == null || !courseCategory.toLowerCase().contains('erasmus'))) {
+            if (agentEmail.toLowerCase().contains('@dorset.ie')) {
+                // Envia para o aluno, com cópia para o agente
+                mail.setToAddresses(new List<String>{ studentEmail });
+                ccFinal.add(agentEmail.trim());
+                logDebug('Enviando para estudante com cópia ao agente (Dorset): ' + agentEmail);
+            } else {
+                // Se o email do agente não for @dorset.ie a carta deve ser enviada para o email do agente apenas.
+                mail.setToAddresses(new List<String>{ agentEmail.trim() });
+                logDebug('Enviando apenas para o agente: ' + agentEmail);
+            }
+        } else {
+            // Fora da condição principal → mantém o comportamento padrão
+            mail.setToAddresses(new List<String>{ studentEmail });
+            logDebug('Condição de curso não atendida, enviando padrão ao estudante.');
+        }
+
+        List<String> ccAtual = mail.getCcAddresses();
+        if (ccAtual != null && !ccAtual.isEmpty()) {
+            ccFinal.addAll(ccAtual);
+        }
 
         // Assunto, corpo e CC a partir do template
         if (pdfResults != null && !pdfResults.isEmpty()) {
             for (PDFGeneratorService.PDFResult pdfResult : pdfResults) {
                 if (String.isNotBlank(pdfResult.emailSubject)) {
-                    mail.setSubject(pdfResult.emailSubject);
-                    mail.setHtmlBody(pdfResult.emailBody);
-                    mail.setCcAddresses(pdfResult.CCEmailAddresses);
-                    break; // Apenas o primeiro template válido
+                    String processedBody = processarRegards(pdfResult.emailBody, opp);
+                    String subject = pdfResult.emailSubject + ' - ' + fullName;
+                    mail.setSubject(subject);
+                    mail.setHtmlBody(processedBody);
+                    if (pdfResult.CCEmailAddresses != null && !pdfResult.CCEmailAddresses.isEmpty()) {
+                        for (String addr : pdfResult.CCEmailAddresses) {
+                            if (addr == null) continue;
+                            String trimmed = addr.trim();
+                            if (String.isNotBlank(trimmed)) {
+                                ccFinal.add(trimmed);
+                            }
+                        }
+                        logDebug('CCs adicionados do template: ' + pdfResult.CCEmailAddresses);
+                    }
+                    logDebug('CCs adicionados do template: ' + pdfResult.CCEmailAddresses);
                 }
+                break; // Apenas o primeiro template válido
             }
         } else {
             logError('Nenhum template de e-mail válido foi fornecido.');
         }
+
+        // ---- Finalizar CCs (remover duplicados e aplicar) ----
+        Set<String> ccUnique = new Set<String>();
+        for (String c : ccFinal) {
+            if (String.isNotBlank(c)) ccUnique.add(c.toLowerCase()); // normaliza a lower-case para dedupe, se preferir manter case, remova toLowerCase()
+        }
+
+        // se houver CCs válidos, aplica
+        if (!ccUnique.isEmpty()) {
+            List<String> ccToSet = new List<String>();
+            for (String s : ccUnique) ccToSet.add(s);
+            mail.setCcAddresses(ccToSet);
+        }
+        System.debug('Enviando e-mail com copias para: ' + (ccUnique.isEmpty() ? '()' : String.join(new List<String>(ccUnique), ',')));
 
         // Anexar PDFs gerados
         List<Messaging.EmailFileAttachment> attachments = new List<Messaging.EmailFileAttachment>();

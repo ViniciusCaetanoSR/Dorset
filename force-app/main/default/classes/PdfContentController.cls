@@ -4,13 +4,17 @@ public without sharing class PdfContentController {
     public String titulo { get; set; }
     public String qrCode { get; set; }
     public Boolean exibirQrCode { get; set; }
+    public Opportunity opp;
+    public String templateType { get; set; }
+    public Boolean isErasmusCategory { get; set; }
+    public Boolean isEnglishLanguageCategory { get; set; }
+    public Boolean isProfessionalCourseCategory { get; set; }
 
     // Constantes
-    private static final String QR_CODE_BASE_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=';
-    //TODO: Mudar para o URL correto
+    private static final String QR_CODE_BASE_URL = 'https://api.qrserver.com/v1/create-qr-code/?size=120x120&data=';
     private static final String VALIDATOR_URL = 'https://dorsetcollege.my.salesforce-sites.com/Validator?id=';
     private static final String TITLE_STYLE = 'color: #12215D; font-family: \'Arial\', Helvetica, sans-serif !important;';
-    private static final String HR_TAG = '<hr style="border: 1px solid #12215D; margin: 0.5;" />';
+    private static final String HR_TAG = '<hr style="height: 1px; background-color: #12215D; border: none; margin: 0.5;" />';
     private static final String P_TAG_STYLE = '<p style="margin:0; padding:0; line-height:1.2; font-size: 12px;">';
 
     // Construtor
@@ -18,13 +22,13 @@ public without sharing class PdfContentController {
         try {
             // Obter parâmetros da página
             Id oppId = ApexPages.currentPage().getParameters().get('id');
-            String templateType = ApexPages.currentPage().getParameters().get('templateType');
+            templateType = ApexPages.currentPage().getParameters().get('templateType');
 
             // Validação de entrada
             if (String.isBlank(oppId) || !String.valueOf(oppId).startsWith(Opportunity.SObjectType.getDescribe().getKeyPrefix())) {
                 throw new PdfContentException('ID de Opportunity inválido: ' + oppId);
             }
-            if (String.isBlank(templateType) || !new Set<String>{'PO', 'ACC'}.contains(templateType)) {
+            if (String.isBlank(templateType) || !new Set<String>{'PO', 'ACC', 'PCCompletion'}.contains(templateType)) {
                 throw new PdfContentException('Template Type inválido: ' + templateType);
             }
 
@@ -34,7 +38,11 @@ public without sharing class PdfContentController {
             System.debug(LoggingLevel.DEBUG, 'templateType: ' + templateType);
 
             // Consultar Opportunity
-            Opportunity opp = queryOpportunity(oppId);
+            opp = queryOpportunity(oppId);
+            isErasmusCategory = (opp.Course_Category__r != null && String.valueOf(opp.Course_Category__r.Name).contains('Erasmus'));
+            isEnglishLanguageCategory = (opp.Course_Category__r != null && String.valueOf(opp.Course_Type__r.Name).contains('English Language'));
+            isProfessionalCourseCategory = (opp.Course_Category__r != null && String.valueOf(opp.Course_Type__r.Name).contains('Professional Courses'));
+
             if (opp.Course_Category__c == null) {
                 System.debug(LoggingLevel.WARN, 'Course_Category__c está nulo para Opportunity: ' + opp.Id);
             }
@@ -78,7 +86,7 @@ public without sharing class PdfContentController {
     // Consultar Opportunity
     private Opportunity queryOpportunity(Id oppId) {
         List<Opportunity> opps = [
-            SELECT Id, Name, Course_Category__c
+            SELECT Id, Name, Course_Category__c, Course_Category__r.name, Course_Type__r.name
             FROM Opportunity
             WHERE Id = :oppId
             LIMIT 1
@@ -111,13 +119,17 @@ public without sharing class PdfContentController {
 
     // Configurar título e QR Code
     private void configureTemplateSettings(String templateType, Id oppId) {
-        if (templateType == 'PO') {
+        if (templateType == 'PO' && !isProfessionalCourseCategory) {
             titulo = '<h2 style="' + TITLE_STYLE + ' margin-bottom: 1;">Provisional Acceptance Letter</h2>';
             exibirQrCode = false;
-        } else if (templateType == 'ACC') {
+        } else if (templateType == 'ACC' && !isProfessionalCourseCategory) {
             titulo = '<h2 style="' + TITLE_STYLE + ' margin-bottom: 1;">Full Acceptance Letter</h2>';
             qrCode = VALIDATOR_URL + oppId;
             exibirQrCode = true;
+        } else if (templateType == 'PO' && isProfessionalCourseCategory) {
+            titulo = '<h2 style="' + TITLE_STYLE + ' margin-bottom: 1;">Confirmation Letter</h2>';
+        } else if (templateType == 'PCCompletion' && isProfessionalCourseCategory){
+            titulo = '<h2 style="' + TITLE_STYLE + ' margin-bottom: 1;">Completion Confirmation Letter</h2>';
         }
         System.debug(LoggingLevel.DEBUG, 'Configurações do template: titulo=' + titulo + ', exibirQrCode=' + exibirQrCode + ', qrCode=' + qrCode);
     }
@@ -279,6 +291,62 @@ public without sharing class PdfContentController {
             return url;
         }
     }
+
+    public Boolean getIsErasmusCategory() {
+        return opp != null &&
+            opp.Course_Category__r != null &&
+            String.valueOf(opp.Course_Category__r.Name).contains('Erasmus');
+    }
+
+    public Boolean getIsEnglishLanguageCategory() {
+        return opp != null &&
+            opp.Course_Type__r != null &&
+            String.valueOf(opp.Course_Type__r.Name).contains('English Language');
+    }
+
+    public Boolean getIsProfessionalCourseCategory() {
+        return opp != null &&
+            opp.Course_Type__r != null &&
+            String.valueOf(opp.Course_Type__r.Name).contains('Professional Courses');
+    }
+
+    // ===== Helpers de Template =====
+    // o template é ACC
+    public Boolean getIsTemplateACC() {
+        return templateType != null && templateType.equalsIgnoreCase('ACC');
+    }
+
+    // o template é PO
+    public Boolean getIsTemplatePO() {
+        return templateType != null && templateType.equalsIgnoreCase('PO');
+    }
+
+    // ===== Lógica de assinatura =====
+    // Patricia: aparece quando é Erasmus e o template é ACC ou PO
+    public Boolean getShowPatricia() {
+        return isErasmusCategory && (getIsTemplateACC() || getIsTemplatePO());
+    }
+
+    // Hugh: aparece quando NÃO é Erasmus e o template é ACC OU É PC
+    public Boolean getShowHugh() {
+        return !isErasmusCategory && (getIsTemplateACC() || isProfessionalCourseCategory);
+    }
+
+    // ===== Lógica de Stamp e QR =====
+    // Mostra o selo (stamp) em ACC (sempre) e PO (somente se for Erasmus)
+    public Boolean getShowStamp() {
+        return getIsTemplateACC() || (isErasmusCategory && getIsTemplatePO()) || (isProfessionalCourseCategory);
+    }
+
+    // Mostra o QR Code somente se for ACC e exibirQrCode = true
+    public Boolean getShowQr() {
+        return getIsTemplateACC() && exibirQrCode;
+    }
+
+    public Boolean getShowValidityNote() {
+        return !isErasmusCategory && !isEnglishLanguageCategory && !isProfessionalCourseCategory && getIsTemplatePO();
+    }
+
 
     // Exceção personalizada
     public class PdfContentException extends Exception {}

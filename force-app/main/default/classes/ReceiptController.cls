@@ -44,6 +44,7 @@ public without sharing class ReceiptController {
             Payment__c payFull = Database.query(dynamicQuery);
             System.debug(LoggingLevel.DEBUG, 'Payment completo consultada: ' + payFull);
 
+                
             // Processar conteúdo do template
             decodedContent = replacePlaceholders(template.HTMLContent__c, payFull);
             decodedContent = limparEspacamento(decodedContent);
@@ -51,6 +52,12 @@ public without sharing class ReceiptController {
             decodedContent = inserirTable(decodedContent);
             decodedContent = inserirData(decodedContent);
 
+            if(payFull.Opportunity__r.Is_this_Application_from_an_Agent__c == true 
+                && payFull.Opportunity__r.Amount_paid__c == payFull.Opportunity__r.Agent_Net_Amount__c) {
+                System.debug(LoggingLevel.INFO, 'Pagamento feito por agência, recalculando valores...');
+                calculateAgentPayment(payFull, decodedContent);
+            }
+                
             System.debug(LoggingLevel.INFO, 'Conteúdo processado: ' + decodedContent);
         } catch (Exception e) {
             System.debug(LoggingLevel.ERROR, 'Erro no ReceiptController: ' + e.getMessage() + '\nStack Trace: ' + e.getStackTraceString());
@@ -113,11 +120,18 @@ public without sharing class ReceiptController {
         for (String fieldName : placeholders) {
             query += ', ' + fieldName;
         }
-        query += ' FROM Payment__c WHERE Id = :paymentId LIMIT 1';
+        query += ', opportunity__r.Is_this_Application_from_an_Agent__c, opportunity__r.Agent_Net_Amount__c, opportunity__r.Total_Amount__c FROM Payment__c WHERE Id = :paymentId LIMIT 1';
         System.debug(LoggingLevel.DEBUG, 'Consulta dinâmica gerada: ' + query);
         return query;
     }
 
+    // Se for pagamento por agência
+    private void calculateAgentPayment(Payment__c payFull, String decodedContent) {
+        System.debug(LoggingLevel.INFO, 'Substituindo valores para pagamento de agência');
+            decodedContent = decodedContent
+            .replace('{{Amount_Paid__c}}', String.valueOf(payFull.Opportunity__r.Total_Amount__c))
+            .replace('{{Student_Outstanding_Balance__c}}', '0');
+    }
     // Substituir placeholders no conteúdo
     private static String replacePlaceholders(String content, SObject record) {
         if (String.isBlank(content)) {
