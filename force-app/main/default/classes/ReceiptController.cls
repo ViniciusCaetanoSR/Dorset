@@ -143,6 +143,35 @@ public without sharing class ReceiptController {
         Pattern pattern = Pattern.compile('\\{\\{([a-zA-Z0-9_\\.]+)\\}\\}');
         Matcher matcher = pattern.matcher(result);
 
+        Payment__c pay;
+        Decimal agentGross;
+        Decimal agentNet;
+        Decimal amountPaidSoFar;
+        Decimal currentPayment;
+        Decimal realPaidAmount;
+
+        if (record instanceof Payment__c) {
+            pay = (Payment__c) record;
+
+            agentGross = pay.Opportunity__r.Agent_Gross_Amout__c != null
+                ? pay.Opportunity__r.Agent_Gross_Amout__c
+                : 0;
+
+            agentNet = pay.Opportunity__r.Agent_Net_Amount__c != null
+                ? pay.Opportunity__r.Agent_Net_Amount__c
+                : 0;
+
+            amountPaidSoFar = pay.Opportunity__r.Amount_Paid__c != null
+                ? pay.Opportunity__r.Amount_Paid__c
+                : 0;
+
+            currentPayment = pay.Payment_Amount__c != null
+                ? pay.Payment_Amount__c
+                : 0;
+
+            realPaidAmount = amountPaidSoFar + currentPayment;
+        }
+
         while (matcher.find()) {
             String placeholder = matcher.group();
             String fieldPath = placeholder.substring(2, placeholder.length() - 2);
@@ -159,17 +188,62 @@ public without sharing class ReceiptController {
                 }
 
                 if (i == pathParts.size() - 1) {
-                    valueObj = currentObj.get(field);
-                    if (valueObj != null) {
-                        if (valueObj instanceof Date) {
-                            value = formatDate((Date) valueObj);
-                        } else if (valueObj instanceof Datetime) {
-                            value = formatDate(((Datetime) valueObj).date());
+                    if (fieldPath == 'opportunity__r.Student_Outstanding_Balance__c'
+                        && pay != null) {
+
+                        Decimal updatedBalance;
+
+                        if (agentNet == realPaidAmount) {
+                            updatedBalance = 0;
                         } else {
-                            value = String.valueOf(valueObj);
+                            updatedBalance = agentGross - realPaidAmount;
+                        }
+
+                        if (updatedBalance < 0) {
+                            updatedBalance = 0;
+                        }
+
+                        value = String.valueOf(updatedBalance.setScale(2));
+
+                        System.debug(LoggingLevel.DEBUG,
+                            'Balance recalculado dinamicamente: ' + value
+                        );
+
+                    } else if (fieldPath == 'opportunity__r.Amount_Paid__c'
+                        && pay != null) {
+
+                        Decimal amountToShow =
+                            (realPaidAmount == agentNet)
+                            ? agentGross
+                            : realPaidAmount;
+
+                        if (amountToShow < 0) {
+                            amountToShow = 0;
+                        } else if (amountToShow > agentGross) {
+                            amountToShow = agentGross;
+                        }
+
+                        value = String.valueOf(amountToShow.setScale(2));
+
+                        System.debug(LoggingLevel.DEBUG,
+                            'Amount Paid recalculado dinamicamente: ' + value
+                        );
+                    } else {
+                        valueObj = currentObj.get(field);
+                        if (valueObj != null) {
+                            if (valueObj instanceof Date) {
+                                value = formatDate((Date) valueObj);
+                            } else if (valueObj instanceof Datetime) {
+                                value = formatDate(((Datetime) valueObj).date());
+                            } else {
+                                value = String.valueOf(valueObj);
+                            }
                         }
                     }
-                    System.debug(LoggingLevel.DEBUG, 'Placeholder ' + placeholder + ' substituído por: ' + value);
+
+                    System.debug(LoggingLevel.DEBUG,
+                        'Placeholder ' + placeholder + ' substituído por: ' + value
+                    );
                 } else {
                     Object nextObj = currentObj.getSObject(field);
                     if (nextObj != null && nextObj instanceof SObject) {

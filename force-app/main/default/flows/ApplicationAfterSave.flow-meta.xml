@@ -3,8 +3,8 @@
     <actionCalls>
         <name>Send_PDF_Email</name>
         <label>Send PDF Email</label>
-        <locationX>660</locationX>
-        <locationY>479</locationY>
+        <locationX>314</locationX>
+        <locationY>539</locationY>
         <actionName>PDFEmailSender</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -27,12 +27,13 @@
             </value>
         </inputParameters>
         <nameSegment>PDFEmailSender</nameSegment>
+        <offset>0</offset>
     </actionCalls>
     <actionCalls>
         <name>SendPDFEmail</name>
         <label>Send PDF Email</label>
-        <locationX>1249</locationX>
-        <locationY>606</locationY>
+        <locationX>578</locationX>
+        <locationY>647</locationY>
         <actionName>PDFEmailSender</actionName>
         <actionType>apex</actionType>
         <flowTransactionModel>CurrentTransaction</flowTransactionModel>
@@ -55,14 +56,83 @@
             </value>
         </inputParameters>
         <nameSegment>PDFEmailSender</nameSegment>
+        <offset>0</offset>
+    </actionCalls>
+    <actionCalls>
+        <name>SendPDFEmailPC</name>
+        <label>Send PDF Email</label>
+        <locationX>50</locationX>
+        <locationY>431</locationY>
+        <actionName>PDFEmailSender</actionName>
+        <actionType>apex</actionType>
+        <flowTransactionModel>CurrentTransaction</flowTransactionModel>
+        <inputParameters>
+            <name>applicationId</name>
+            <value>
+                <elementReference>$Record.Id</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>courseCategoryId</name>
+            <value>
+                <elementReference>$Record.Course_Category__c</elementReference>
+            </value>
+        </inputParameters>
+        <inputParameters>
+            <name>templateType</name>
+            <value>
+                <stringValue>PCCompletion</stringValue>
+            </value>
+        </inputParameters>
+        <nameSegment>PDFEmailSender</nameSegment>
+        <offset>0</offset>
     </actionCalls>
     <apiVersion>63.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
     <decisions>
+        <name>PC_CompletionConfirmation</name>
+        <label>Send PC Completion Confirmation?</label>
+        <locationX>281</locationX>
+        <locationY>323</locationY>
+        <defaultConnector>
+            <targetReference>Send_Full_Acceptance_Letter</targetReference>
+        </defaultConnector>
+        <defaultConnectorLabel>No</defaultConnectorLabel>
+        <rules>
+            <name>Yes</name>
+            <conditionLogic>and</conditionLogic>
+            <conditions>
+                <leftValueReference>$Record__Prior.Completedsuccessfully__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>false</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Completedsuccessfully__c</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <booleanValue>true</booleanValue>
+                </rightValue>
+            </conditions>
+            <conditions>
+                <leftValueReference>$Record.Course_Type__r.Name</leftValueReference>
+                <operator>EqualTo</operator>
+                <rightValue>
+                    <stringValue>Professional Courses</stringValue>
+                </rightValue>
+            </conditions>
+            <connector>
+                <targetReference>SendPDFEmailPC</targetReference>
+            </connector>
+            <label>Yes</label>
+        </rules>
+    </decisions>
+    <decisions>
         <name>Send_Full_Acceptance_Letter</name>
         <label>Send Full Acceptance Letter ?</label>
-        <locationX>858</locationX>
-        <locationY>371</locationY>
+        <locationX>512</locationX>
+        <locationY>431</locationY>
         <defaultConnector>
             <targetReference>SendProvisionalOffer</targetReference>
         </defaultConnector>
@@ -100,8 +170,8 @@
     <decisions>
         <name>SendProvisionalOffer</name>
         <label>Send Provisional Offer ?</label>
-        <locationX>1056</locationX>
-        <locationY>479</locationY>
+        <locationX>710</locationX>
+        <locationY>539</locationY>
         <defaultConnectorLabel>No</defaultConnectorLabel>
         <rules>
             <name>YesSendProvisionalOffer</name>
@@ -145,7 +215,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -156,14 +226,14 @@
     </processMetadataValues>
     <processType>AutoLaunchedFlow</processType>
     <start>
-        <locationX>732</locationX>
-        <locationY>48</locationY>
+        <locationX>155</locationX>
+        <locationY>0</locationY>
         <connector>
-            <targetReference>Send_Full_Acceptance_Letter</targetReference>
+            <targetReference>PC_CompletionConfirmation</targetReference>
         </connector>
         <object>Opportunity</object>
         <recordTriggerType>CreateAndUpdate</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
 </Flow>

@@ -112,6 +112,7 @@
     <tabs>Room__c</tabs>
     <tabs>App_Overview__c</tabs>
     <tabs>PdfTemplate__c</tabs>
+    <tabs>EdvisorApplication__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Sales_UtilityBar</utilityBar>
 </CustomApplication>

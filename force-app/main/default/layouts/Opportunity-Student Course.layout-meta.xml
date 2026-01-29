@@ -59,6 +59,10 @@
                 <behavior>Readonly</behavior>
                 <field>Student_Type__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ILEP_Ref_Number__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>
@@ -145,6 +149,10 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>CurrentlyOnCourse__c</field>
+            </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>EnglishLanguageCourse__c</field>
             </layoutItems>
         </layoutColumns>
         <layoutColumns>
@@ -248,8 +256,8 @@
                 <field>Partner_Outstanding_Balance2__c</field>
             </layoutItems>
             <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Outstanding_Balance_2__c</field>
+                <behavior>Readonly</behavior>
+                <field>Student_Outstanding_Balance__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>
@@ -494,37 +502,6 @@
             <layoutItems>
                 <behavior>Edit</behavior>
                 <field>Flight_Ticket_Received__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <style>TwoColumnsLeftToRight</style>
-    </layoutSections>
-    <layoutSections>
-        <customLabel>true</customLabel>
-        <detailHeading>true</detailHeading>
-        <editHeading>true</editHeading>
-        <label>Previous Studies</label>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Institution_Name__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>course_from_year__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Year_of_entry__c</field>
-            </layoutItems>
-        </layoutColumns>
-        <layoutColumns>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>Course_Name__c</field>
-            </layoutItems>
-            <layoutItems>
-                <behavior>Edit</behavior>
-                <field>course_to_year__c</field>
             </layoutItems>
         </layoutColumns>
         <style>TwoColumnsLeftToRight</style>

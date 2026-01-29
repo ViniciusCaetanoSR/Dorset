@@ -3394,7 +3394,7 @@
         <inputAssignments>
             <field>Discount1__c</field>
             <value>
-                <numberValue>-300.0</numberValue>
+                <numberValue>-500.0</numberValue>
             </value>
         </inputAssignments>
         <inputAssignments>

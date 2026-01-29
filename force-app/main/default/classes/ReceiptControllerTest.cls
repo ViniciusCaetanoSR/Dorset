@@ -21,12 +21,22 @@ public with sharing class ReceiptControllerTest {
             Name = 'Produto Teste',
             Parent_Course__c = course.Id,
             IsActive = true,
-            Start_Date__c = Date.newInstance(2024, 12, 12),
-            End_Date__c = Date.newInstance(2025, 12, 12)
+            Start_Date__c = Date.newInstance(2025, 12, 12),
+            End_Date__c = Date.newInstance(2026, 12, 12)
         );
         insert product;
 
-        Opportunity opp = VirtualTestData.createOpportunity('Oportunidade Teste', 'ACC', Date.today().addDays(10), agent.Id, acc.Id, product.Id, courseCategory.Id, courseType.Id);
+        Opportunity opp = new Opportunity(
+            Name = 'Oportunidade Teste',
+            StageName = 'PO',
+            CloseDate = Date.today().addDays(10),
+            AccountId = acc.Id,
+            Agent__c = agent.Id,
+            Course_Category__c = courseCategory.Id,
+            Course_Type__c = courseType.Id,
+            Product__c = product.Id,
+            LeadCloseDate__c = Date.today().addDays(10)
+        );
         insert opp;
 
         product.IsActive = true;
@@ -84,7 +94,11 @@ public with sharing class ReceiptControllerTest {
         );
         insert pay;
 
-        PDFTemplate__c template = VirtualTestData.createPdfTemplate('Receipt', true, '', courseCategory.Id, '----- Total Amount: € {{opportunity__r.amount}} {table} -----');
+        PDFTemplate__c template = VirtualTestData.createPdfTemplate('Receipt', true, '', courseCategory.Id, '----- Total Amount: € {{opportunity__r.Agent_Gross_Amout__c}}<br/>' +
+            'Paid: {{opportunity__r.Amount_Paid__c}}<br/>' +
+            'Outstanding: {{opportunity__r.Student_Outstanding_Balance__c}}' +
+			'Payment amount: {{Payment_Amount__c}}' +
+            '{table} -----');
         insert template;
 
         Test.startTest();

@@ -6,6 +6,7 @@
     <columns>NAME</columns>
     <columns>Payment_Amount__c</columns>
     <columns>Due_Date__c</columns>
+    <columns>CREATEDBY_USER</columns>
     <columns>Balance_Remaining__c</columns>
     <columns>LAST_UPDATE</columns>
     <columns>CREATED_DATE</columns>

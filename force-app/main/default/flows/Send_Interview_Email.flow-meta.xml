@@ -48,6 +48,7 @@
             </value>
         </inputParameters>
         <nameSegment>emailSimple</nameSegment>
+        <offset>0</offset>
     </actionCalls>
     <apiVersion>55.0</apiVersion>
     <areMetricsLoggedToDataCloud>false</areMetricsLoggedToDataCloud>
@@ -197,7 +198,7 @@ You are now been invited for a quick interview on Zoom to have assessed a few ar
 
 &lt;span style=&quot;font-size:14px&quot;&gt;The interview will take between 10 and 15 minutes, during which you will also have the opportunity&amp;nbsp;to ask any questions about Dorset College and the course that you are interested in.&lt;br /&gt;
 &lt;br /&gt;
-Please&amp;nbsp;&lt;a href=&quot;https://professionalcoursesinterview.youcanbook.me/&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; title=&quot;https://professionalcoursesinterview.youcanbook.me/&quot;&gt;click here&lt;/a&gt;&amp;nbsp;to&amp;nbsp;book your slot.&amp;nbsp;&amp;nbsp;&lt;br /&gt;
+Please&amp;nbsp;&lt;a href=&quot;https://calendly.com/qing-dorset/&quot; rel=&quot;noopener noreferrer&quot; target=&quot;_blank&quot; title=&quot;https://calendly.com/qing-dorset/&quot;&gt;click here&lt;/a&gt;&amp;nbsp;to&amp;nbsp;book your slot.&amp;nbsp;&amp;nbsp;&lt;br /&gt;
 &lt;br /&gt;
 Regards,&lt;/span&gt;
 

@@ -363,6 +363,10 @@
                 <behavior>Edit</behavior>
                 <field>date_credit_note_ticked__c</field>
             </layoutItems>
+            <layoutItems>
+                <behavior>Edit</behavior>
+                <field>ILEP_Ref_Number__c</field>
+            </layoutItems>
         </layoutColumns>
         <layoutColumns>
             <layoutItems>

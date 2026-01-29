@@ -256,6 +256,12 @@ VALUE(SUBSTITUTE(left({!$Record.WeeksDuration__c},2),&quot; &quot;,&quot;&quot;)
             </value>
         </inputAssignments>
         <inputAssignments>
+            <field>ILEP_Ref_Number__c</field>
+            <value>
+                <elementReference>$Record.Product__r.ILEP_Ref_Number__c</elementReference>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
             <field>Product_End_Date2__c</field>
             <value>
                 <elementReference>EFL_end_Date</elementReference>
@@ -302,6 +308,12 @@ VALUE(SUBSTITUTE(left({!$Record.WeeksDuration__c},2),&quot; &quot;,&quot;&quot;)
             <field>Discount1__c</field>
             <value>
                 <numberValue>0.0</numberValue>
+            </value>
+        </inputAssignments>
+        <inputAssignments>
+            <field>ILEP_Ref_Number__c</field>
+            <value>
+                <elementReference>$Record.Product__r.ILEP_Ref_Number__c</elementReference>
             </value>
         </inputAssignments>
         <inputAssignments>

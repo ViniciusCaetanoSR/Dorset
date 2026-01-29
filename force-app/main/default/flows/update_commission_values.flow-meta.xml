@@ -5,8 +5,8 @@
     <decisions>
         <name>check_main_product</name>
         <label>check main product</label>
-        <locationX>822</locationX>
-        <locationY>181</locationY>
+        <locationX>396</locationX>
+        <locationY>971</locationY>
         <defaultConnector>
             <targetReference>NewPercentageUpdate_0</targetReference>
         </defaultConnector>
@@ -30,8 +30,8 @@
     <decisions>
         <name>check_main_product_0</name>
         <label>check main product</label>
-        <locationX>800</locationX>
-        <locationY>710</locationY>
+        <locationX>1452</locationX>
+        <locationY>971</locationY>
         <defaultConnector>
             <targetReference>RenewalPercentage</targetReference>
         </defaultConnector>
@@ -55,9 +55,10 @@
     <decisions>
         <name>check_records_count</name>
         <label>check records count</label>
-        <locationX>184</locationX>
-        <locationY>787</locationY>
+        <locationX>1815</locationX>
+        <locationY>755</locationY>
         <defaultConnector>
+            <isGoTo>true</isGoTo>
             <targetReference>RenewalFixed_0</targetReference>
         </defaultConnector>
         <defaultConnectorLabel>Default Outcome</defaultConnectorLabel>
@@ -80,8 +81,8 @@
     <decisions>
         <name>Commission_Type</name>
         <label>Commission Type</label>
-        <locationX>265</locationX>
-        <locationY>622</locationY>
+        <locationX>1254</locationX>
+        <locationY>863</locationY>
         <defaultConnector>
             <targetReference>RenewalFixed_0</targetReference>
         </defaultConnector>
@@ -192,11 +193,13 @@
                 </rightValue>
             </conditions>
             <connector>
+                <isGoTo>true</isGoTo>
                 <targetReference>RenewalFixed</targetReference>
             </connector>
             <label>Renewal Fixed</label>
         </rules>
     </decisions>
+    <description>Versão para testes</description>
     <environments>Default</environments>
     <formulas>
         <name>Calcualte_reneweal_totalNet</name>
@@ -287,8 +290,8 @@
     <loops>
         <name>loop_Opportunity_Products</name>
         <label>loop Opportunity Products</label>
-        <locationX>48</locationX>
-        <locationY>519</locationY>
+        <locationX>176</locationX>
+        <locationY>539</locationY>
         <collectionReference>opportunityProductCollection</collectionReference>
         <iterationOrder>Asc</iterationOrder>
         <nextValueConnector>
@@ -304,7 +307,7 @@
     <processMetadataValues>
         <name>CanvasMode</name>
         <value>
-            <stringValue>FREE_FORM_CANVAS</stringValue>
+            <stringValue>AUTO_LAYOUT_CANVAS</stringValue>
         </value>
     </processMetadataValues>
     <processMetadataValues>
@@ -317,8 +320,8 @@
     <recordLookups>
         <name>Get_Commission_Values</name>
         <label>Get Commission Values</label>
-        <locationX>432</locationX>
-        <locationY>346</locationY>
+        <locationX>1815</locationX>
+        <locationY>647</locationY>
         <assignNullValuesIfNoRecordsFound>true</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>check_records_count</targetReference>
@@ -351,8 +354,8 @@
     <recordLookups>
         <name>Opportunity_Product_get_records</name>
         <label>Opportunity Product get records</label>
-        <locationX>141</locationX>
-        <locationY>279</locationY>
+        <locationX>176</locationX>
+        <locationY>431</locationY>
         <assignNullValuesIfNoRecordsFound>false</assignNullValuesIfNoRecordsFound>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
@@ -388,8 +391,8 @@
     <recordUpdates>
         <name>New_Fixed</name>
         <label>New Fixed</label>
-        <locationX>734</locationX>
-        <locationY>553</locationY>
+        <locationX>792</locationX>
+        <locationY>971</locationY>
         <connector>
             <targetReference>Update_Gross_and_Net_Amount_on_App</targetReference>
         </connector>
@@ -412,8 +415,8 @@
     <recordUpdates>
         <name>NewPercentageUpdate</name>
         <label>NewPercentageUpdate</label>
-        <locationX>1037</locationX>
-        <locationY>258</locationY>
+        <locationX>264</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>update_oppotyunity</targetReference>
         </connector>
@@ -436,8 +439,8 @@
     <recordUpdates>
         <name>NewPercentageUpdate_0</name>
         <label>NewPercentageUpdate</label>
-        <locationX>1186</locationX>
-        <locationY>174</locationY>
+        <locationX>528</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>update_oppotyunity</targetReference>
         </connector>
@@ -460,8 +463,8 @@
     <recordUpdates>
         <name>NewPercentageUpdate_0_0</name>
         <label>NewPercentageUpdate</label>
-        <locationX>1021</locationX>
-        <locationY>684</locationY>
+        <locationX>1320</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>Update_Gross_and_Net_Amount_on_App2</targetReference>
         </connector>
@@ -484,8 +487,8 @@
     <recordUpdates>
         <name>RenewalFixed</name>
         <label>RenewalFixed</label>
-        <locationX>575</locationX>
-        <locationY>761</locationY>
+        <locationX>1056</locationX>
+        <locationY>971</locationY>
         <connector>
             <targetReference>Update_Gross_and_Net_Amount_on_App3</targetReference>
         </connector>
@@ -508,8 +511,8 @@
     <recordUpdates>
         <name>RenewalFixed_0</name>
         <label>RenewalFixed</label>
-        <locationX>464</locationX>
-        <locationY>880</locationY>
+        <locationX>2112</locationX>
+        <locationY>971</locationY>
         <connector>
             <targetReference>update_oppotyunity_0</targetReference>
         </connector>
@@ -532,8 +535,8 @@
     <recordUpdates>
         <name>RenewalPercentage</name>
         <label>RenewalPercentage</label>
-        <locationX>1141</locationX>
-        <locationY>820</locationY>
+        <locationX>1584</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>Update_Gross_and_Net_Amount_on_App2</targetReference>
         </connector>
@@ -556,8 +559,8 @@
     <recordUpdates>
         <name>set_values_to_zero</name>
         <label>set values to zero</label>
-        <locationX>189</locationX>
-        <locationY>50</locationY>
+        <locationX>176</locationX>
+        <locationY>323</locationY>
         <connector>
             <targetReference>Opportunity_Product_get_records</targetReference>
         </connector>
@@ -578,8 +581,8 @@
     <recordUpdates>
         <name>Update_Gross_and_Net_Amount_on_App</name>
         <label>Update Gross and Net Amount on App</label>
-        <locationX>862</locationX>
-        <locationY>564</locationY>
+        <locationX>792</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
         </connector>
@@ -600,8 +603,8 @@
     <recordUpdates>
         <name>Update_Gross_and_Net_Amount_on_App2</name>
         <label>Update Gross and Net Amount on App</label>
-        <locationX>1206</locationX>
-        <locationY>641</locationY>
+        <locationX>1452</locationX>
+        <locationY>1271</locationY>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
         </connector>
@@ -622,8 +625,8 @@
     <recordUpdates>
         <name>Update_Gross_and_Net_Amount_on_App3</name>
         <label>Update Gross and Net Amount on App</label>
-        <locationX>817</locationX>
-        <locationY>853</locationY>
+        <locationX>1056</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
         </connector>
@@ -644,8 +647,8 @@
     <recordUpdates>
         <name>update_oppotyunity</name>
         <label>update Gross and Net Amount on App</label>
-        <locationX>1226</locationX>
-        <locationY>418</locationY>
+        <locationX>396</locationX>
+        <locationY>1271</locationY>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
         </connector>
@@ -666,8 +669,8 @@
     <recordUpdates>
         <name>update_oppotyunity_0</name>
         <label>update Gross and Net Amount on App</label>
-        <locationX>353</locationX>
-        <locationY>946</locationY>
+        <locationX>2112</locationX>
+        <locationY>1079</locationY>
         <connector>
             <targetReference>loop_Opportunity_Products</targetReference>
         </connector>
@@ -686,8 +689,8 @@
         <inputReference>$Record</inputReference>
     </recordUpdates>
     <start>
-        <locationX>443</locationX>
-        <locationY>44</locationY>
+        <locationX>50</locationX>
+        <locationY>0</locationY>
         <connector>
             <targetReference>set_values_to_zero</targetReference>
         </connector>
@@ -738,7 +741,7 @@
         <recordTriggerType>Update</recordTriggerType>
         <triggerType>RecordAfterSave</triggerType>
     </start>
-    <status>Active</status>
+    <status>Draft</status>
     <variables>
         <name>AgentID</name>
         <dataType>String</dataType>

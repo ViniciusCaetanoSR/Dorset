@@ -4,11 +4,7 @@
     <columns>NAME</columns>
     <columns>CREATED_DATE</columns>
     <columns>LAST_UPDATE</columns>
-    <filterScope>Mine</filterScope>
-    <filters>
-        <field>OWNER.FIRST_NAME</field>
-        <operation>equals</operation>
-        <value>Marina</value>
-    </filters>
+    <columns>CREATEDBY_USER</columns>
+    <filterScope>Everything</filterScope>
     <label>All</label>
 </ListView>

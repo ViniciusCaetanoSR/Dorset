@@ -20,6 +20,11 @@
                 <default>false</default>
                 <label>ACC</label>
             </value>
+            <value>
+                <fullName>PCCompletion</fullName>
+                <default>false</default>
+                <label>PCCompletion</label>
+            </value>
         </valueSetDefinition>
     </valueSet>
 </CustomField>
